@@ -51,7 +51,7 @@ router.post('/sign-in', async (req, res) => {
     const validPassword = bcrypt.compareSync(req.body.password, userInDatabase.hashedPassword);
 
     if (!validPassword) {
-      return res.status(401).json({ err: 'Username or Password is invalid' });
+      return res.status(401).json({ err: 'Email or Password is invalid' });
     }
 
     const payload = {
@@ -64,7 +64,7 @@ router.post('/sign-in', async (req, res) => {
     res.json({ token, user: userInDatabase });
   } catch (err) {
     console.log(err);
-    res.status(500).json({ err: 'Invalid Username or Password' });
+    res.status(500).json({ err: 'Invalid Email or Password' });
   }
 });
 
