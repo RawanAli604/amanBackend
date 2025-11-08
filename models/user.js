@@ -23,7 +23,7 @@ require: true,
   },
   area: {
     type: String,
-    enum: [areas],
+    enum: areas,
     require: true,
   },
   createdAt: {
