@@ -1,13 +1,34 @@
 const mongoose = require('mongoose');
+const areasFile = require('./bh.json');
+
+//extract the city name
+const areas = areasFile.map(a => a.city);
 
 const userSchema = mongoose.Schema({
-  username: {
+  name: {
     type: String,
     require: true,
+  },
+  email:{
+type: String,
+require: true,
   },
   hashedPassword: {
     type: String,
     require: true,
+  },
+  phone: {
+    type:String,
+    require:true,
+  },
+  area: {
+    type: String,
+    enum: areas,
+    require: true,
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now,
   },
 });
 
