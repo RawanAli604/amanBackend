@@ -9,11 +9,11 @@ const verifyToken = require('../middleware/verify-token');
 //new report
 router.post('/', verifyToken, async (req, res) => {
   try {
-    const { areaName, title, type, description } = req.body;
+    const { area, title, type, description } = req.body;
 
     const report = await Report.create({
       author: req.user._id,
-      areaName,
+      area,
       title,
       type,
       description
