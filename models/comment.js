@@ -16,5 +16,5 @@ const commentSchema = mongoose.Schema({
         required: true,
     },
 }, {
-
+    timestamps: { createdAt: 'created_at', updatedAt: false },
 });
