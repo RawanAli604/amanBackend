@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const areasFile = require('./bh.json');
 
 const areas = areasFile.map(a => a.city);
 
