@@ -18,3 +18,7 @@ const commentSchema = mongoose.Schema({
 }, {
     timestamps: { createdAt: 'created_at', updatedAt: false },
 });
+
+const Comment = mongoose.model('Comment', commentSchema);
+
+module.exports = Comment;
