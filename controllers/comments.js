@@ -23,7 +23,9 @@ router.post('/', verifyToken, async (req, res) => {
 router.get('/:report_id', async (req, res) => {
     try {
         const comments = await Comment.find({ reports_id: req.params.report_id })
+        // replace user_id ObjectId with actual user information (we only show their name)
         .populate('user_id', 'name')
+         // show newest comments at the top
         .sort({ created_at: -1});
 
     res.status(200).json(comments);
@@ -31,3 +33,16 @@ router.get('/:report_id', async (req, res) => {
     res.status(500).json({ message: 'Error getting comments', error: err.message });
   }
 });
+
+router.delete('/:id', verifyToken , async (req, res) => {
+    try {
+        await Comment.findByIdAndDelete(req.params.id);
+        res.status(200).json({message: 'Comment deleted'});
+
+    }  catch (err) {
+        res.status(500).jsonn({ message: 'Error deleting comment', error: err.message });
+    }
+});
+
+module.exports = router;
+
