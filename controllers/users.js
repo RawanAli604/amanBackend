@@ -3,6 +3,18 @@ const router = express.Router();
 const verifyToken = require('../middleware/verify-token');
 const User = require('../models/user');
 
+
+//get all users
+//needed to get user Information in the front-end
+router.get('/', async (req, res) => {
+  try {
+    const users = await User.find({}).select('-hashedPassword');
+    res.status(200).json(users);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 //get user profile
 router.get('/:userId', async (req, res) => {
   try {
@@ -10,7 +22,7 @@ router.get('/:userId', async (req, res) => {
     if (!user) {
       return res.status(404).json({ error: 'User not found' });
     }
-    res.status(200).json(user._id);
+    res.status(200).json(user);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
