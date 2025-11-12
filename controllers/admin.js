@@ -1,25 +1,65 @@
+const express = require('express');
+const router = express.Router();
+const verifyToken = require('../middleware/verify-token');
+const verifyAdmin = require('../middleware/verify-admin');
+const Report = require('../models/report');
 
-const jwt = require('jsonwebtoken');
-const User = require('../models/user');
-
-const verifyAdmin = async (req, res, next) => {
+// Get all reports
+router.get('/', verifyToken, verifyAdmin, async (req, res) => {
   try {
-    const token = req.headers.authorization?.split(' ')[1];
-    if (!token) {
-        return res.status(401).json({ error: 'Access denied. No token provided.' });
-    }
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    const user = await User.findById(decoded._id);
-
-    if (!user || user.role !== 'admin') {
-      return res.status(403).json({ error: 'Access denied. Admins only.' });
-    }
-
-    req.user = user;
-    next();
-  } catch (error) {
-    res.status(400).json({ error: 'Invalid or expired token' });
+    const reports = await Report.find().populate('author', 'name email');
+    res.status(200).json(reports);
+  } catch (err) {
+    res.status(500).json({ message: 'Error fetching reports', error: err.message });
   }
-};
+});
 
-module.exports = verifyAdmin;
+// Approve a report
+router.put('/:id/approve', verifyToken, verifyAdmin, async (req, res) => {
+  try {
+    const report = await Report.findByIdAndUpdate(
+      req.params.id,
+      { status: 'approved' },
+    );
+
+    if (!report) return res.status(404).json({ message: 'Report not found' });
+
+    res.status(200).json(report);
+  } catch (err) {
+    res.status(500).json({ message: 'Error approving report', error: err.message });
+  }
+});
+
+// Reject a report
+router.put('/:id/reject', verifyToken, verifyAdmin, async (req, res) => {
+  try {
+    const report = await Report.findByIdAndUpdate(
+      req.params.id,
+      { status: 'rejected' },
+    );
+
+    if (!report) return res.status(404).json({ message: 'Report not found' });
+
+    res.status(200).json(report);
+  } catch (err) {
+    res.status(500).json({ message: 'Error rejecting report', error: err.message });
+  }
+});
+
+// Mark a report as pending
+router.put('/:id/pending', verifyToken, verifyAdmin, async (req, res) => {
+  try {
+    const report = await Report.findByIdAndUpdate(
+      req.params.id,
+      { status: 'pending' },
+    );
+
+    if (!report) return res.status(404).json({ message: 'Report not found' });
+
+    res.status(200).json(report);
+  } catch (err) {
+    res.status(500).json({ message: 'Error setting report to pending', error: err.message });
+  }
+});
+
+module.exports = router;

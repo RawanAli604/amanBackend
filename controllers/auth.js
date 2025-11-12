@@ -50,7 +50,7 @@ router.post('/sign-in', async (req, res) => {
     }
 
     const validPassword = bcrypt.compareSync(req.body.password, userInDatabase.hashedPassword);
-
+   
     if (!validPassword) {
       return res.status(401).json({ err: 'Email or Password is invalid' });
     }
@@ -58,6 +58,7 @@ router.post('/sign-in', async (req, res) => {
     const payload = {
       email: userInDatabase.email,
       _id: userInDatabase._id,
+      role: userInDatabase.role
     };
 
     const token = jwt.sign(payload, process.env.JWT_SECRET);
