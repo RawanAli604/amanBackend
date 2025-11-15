@@ -22,7 +22,7 @@ router.post('/', verifyToken, async (req, res) => {
 
 router.get('/:report_id', async (req, res) => {
     try {
-        const comments = await Comment.find({ reports_id: req.params.report_id })
+        const comments = await Comment.find({ report_id: req.params.report_id })
         // replace user_id ObjectId with actual user information (we only show their name)
         .populate('user_id', 'name')
          // show newest comments at the top
