@@ -7,25 +7,25 @@ const reportSchema = mongoose.Schema({
   author: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
-    require: true,
+    required: true,
   }, 
   area: {
     type: String,
     enum: areas,
-    require: true,
+    required: true,
   },
   title: {
     type: String,
-    require: true,
+    required: true,
   },
   type: {
     type: String,
     enum: ['suspicious', 'lost', 'found', 'other'],
-    require: true,
+    required: true,
   },
   description: {
     type: String,
-    require: true,
+    required: true,
   },
   status: {
     type: String,

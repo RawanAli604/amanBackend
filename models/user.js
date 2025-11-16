@@ -7,24 +7,24 @@ const areas = areasFile.map(a => a.city);
 const userSchema = mongoose.Schema({
   name: {
     type: String,
-    require: true,
+    required: true,
   },
   email:{
 type: String,
-require: true,
+required: true,
   },
   hashedPassword: {
     type: String,
-    require: true,
+    required: true,
   },
   phone: {
     type:String,
-    require:true,
+    required:true,
   },
   area: {
     type: String,
     enum: areas,
-    require: true,
+    required: true,
   },
   role: {
   type: String,
