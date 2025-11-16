@@ -28,7 +28,8 @@ router.post('/sign-up', async (req, res) => {
       email: newUser.email,
       _id: newUser._id,
       role: newUser.role,
-      name: newUser.name
+      name: newUser.name,
+      area: newUser.area
     };
 
     const token = jwt.sign(payload, process.env.JWT_SECRET);
@@ -60,7 +61,8 @@ router.post('/sign-in', async (req, res) => {
       email: userInDatabase.email,
       _id: userInDatabase._id,
       role: userInDatabase.role,
-      name:userInDatabase.name
+      name:userInDatabase.name,
+      area:userInDatabase.area
     };
 
     const token = jwt.sign(payload, process.env.JWT_SECRET);

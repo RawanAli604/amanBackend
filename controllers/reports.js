@@ -17,7 +17,8 @@ router.post('/', verifyToken, async (req, res) => {
       area,
       title,
       type,
-      description
+      description,
+      status: 'pending',
     });
 
 
@@ -34,6 +35,20 @@ router.get('/', async (req, res) => {
     res.status(200).json(reports);
   } catch (err) {
     res.status(500).json({ message: 'Error getting the reports', error: err.message });
+  }
+});
+
+//get reports in user area for the community page 
+router.get('/area/:area', verifyToken, async (req, res) => {
+  try {
+    const reports = await Report.find({
+      status: 'approved',
+      area: req.params.area,
+    });
+
+    res.status(200).json(reports);
+  } catch (err) {
+    res.status(500).json({ message: 'Error fetching community reports' });
   }
 });
 
