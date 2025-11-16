@@ -9,8 +9,13 @@ const verifyToken = require('../middleware/verify-token');
 
 //new report
 router.post('/', verifyToken, async (req, res) => {
+
   try {
     const { area, title, type, description } = req.body;
+
+    if (!title || !type || !description || !area) {
+      return res.status(400).json({ message: 'All fields are required' });
+    }
 
     const report = await Report.create({
       author: req.user._id,
@@ -21,12 +26,12 @@ router.post('/', verifyToken, async (req, res) => {
       status: 'pending',
     });
 
-
     res.status(201).json(report);
   } catch (err) {
-    res.status(500).json({ message: 'Error creating report', error: err.message });
+    res.status(500).json({ error: err.message });
   }
 });
+
 
 //get all reports
 router.get('/', async (req, res) => {
