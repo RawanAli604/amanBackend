@@ -94,10 +94,6 @@ router.delete('/:id', verifyToken, async (req, res) => {
   try {
     const report = await Report.findById(req.params.id);
 
-    if (!report) {
-      return res.status(404).json({ message: 'Report not found' });
-    }
-
     await Comment.deleteMany({ report_id: req.params.id });
 
     const deletedReport = await Report.findByIdAndDelete(req.params.id);
